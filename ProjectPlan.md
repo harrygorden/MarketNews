@@ -359,7 +359,7 @@ src/
 - [ ] **6.5** Implement digest message formatting with ranked article list
 - [ ] **6.6** Create premarket digest (6:30 AM ET, weekdays)
 - [ ] **6.7** Create lunch digest (12:00 PM ET, weekdays)
-- [ ] **6.8** Create post-market digest (4:30 PM ET, weekdays)
+- [ ] **6.8** Create postmarket digest (4:30 PM ET, weekdays)
 - [ ] **6.9** Create weekly digest (12:00 PM ET, Saturday)
 - [ ] **6.10** Store digest records in `digests` and `digest_articles` tables
 - [ ] **6.11** Update articles with `included_in_digest_at` timestamp
@@ -378,6 +378,7 @@ src/
 #### Dependencies
 
 - Milestone 1 (database models)
+- Milestone 4 (article analyses exist in database)
 - Milestone 5 (Discord service)
 
 #### Files to Create/Modify

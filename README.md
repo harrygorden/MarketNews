@@ -124,7 +124,7 @@ GitHub Actions automate deployments:
 ### Azure App Settings
 - Shared: `DATABASE_URL`, `STOCKNEWS_API_KEY`, `FIRECRAWL_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `DISCORD_WEBHOOK_ALERTS`, `DISCORD_WEBHOOK_DIGESTS`, `AZURE_STORAGE_CONNECTION_STRING`, `QUEUE_NAME`, `IMPACT_THRESHOLD`, `LOG_LEVEL`.
 - Function App only: `AzureWebJobsStorage`, `FUNCTIONS_WORKER_RUNTIME=python`.
-- Web App: set startup command to `gunicorn -w 4 -k uvicorn.workers.UvicornWorker wsgi:app` (or configure via portal).
+- Web App: set startup command to `gunicorn -w 4 wsgi:app` (or configure via portal).
 
 ### Notes
 - Root `requirements.txt` mirrors `pyproject.toml` for App Service builds.

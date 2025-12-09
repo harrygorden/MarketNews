@@ -41,10 +41,6 @@ def create_app() -> Flask:
     register_blueprints(app)
     _register_template_filters(app)
 
-    @app.after_serving
-    async def _dispose_engine() -> None:  # pragma: no cover - server shutdown lifecycle
-        await engine.dispose()
-
     return app
 
 

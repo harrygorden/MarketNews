@@ -110,3 +110,23 @@ python scripts/init_db.py
   ```bash
   python scripts/test_queue_connectivity.py --article-id 123 --news-url https://example.com --source Example
   ```
+
+## Deployment (Milestone 8)
+GitHub Actions automate deployments:
+- `.github/workflows/deploy-functions.yml` packages `src/functions` (run-from-package) and pushes to Azure Functions.
+- `.github/workflows/deploy-webapp.yml` deploys the Flask UI to Azure App Service.
+
+### Required GitHub Secrets (federated)
+- `AZURE_SUBSCRIPTION_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`
+- `AZURE_FUNCTIONAPP_NAME` (Functions target)
+- `AZURE_WEBAPP_NAME` (App Service target)
+
+### Azure App Settings
+- Shared: `DATABASE_URL`, `STOCKNEWS_API_KEY`, `FIRECRAWL_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `DISCORD_WEBHOOK_ALERTS`, `DISCORD_WEBHOOK_DIGESTS`, `AZURE_STORAGE_CONNECTION_STRING`, `QUEUE_NAME`, `IMPACT_THRESHOLD`, `LOG_LEVEL`.
+- Function App only: `AzureWebJobsStorage`, `FUNCTIONS_WORKER_RUNTIME=python`.
+- Web App: set startup command to `gunicorn -w 4 -k uvicorn.workers.UvicornWorker webapp.wsgi:app` (or configure via portal).
+
+### Notes
+- Root `requirements.txt` mirrors `pyproject.toml` for App Service builds.
+- Functions workflow restores deps into `.python_packages` before zipping `src/functions`.
+- Both workflows trigger on pushes to `main` and support manual `workflow_dispatch`.

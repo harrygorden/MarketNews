@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Market News{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-brand">
+      <a href="{{ url_for('articles.list_articles') }}">{{ app_name }}</a>
+    </div>
+    <nav class="nav-links">
+      <a href="{{ url_for('articles.list_articles') }}"
+         class="{{ 'active' if request.endpoint and request.endpoint.startswith('articles') else '' }}">
+        Articles
+      </a>
+      <a href="{{ url_for('digests.history') }}"
+         class="{{ 'active' if request.endpoint and request.endpoint.startswith('digests') else '' }}">
+        Digests
+      </a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Data sourced from the MarketNews pipeline. No authentication required.</p>
+  </footer>
+</body>
+</html>
+

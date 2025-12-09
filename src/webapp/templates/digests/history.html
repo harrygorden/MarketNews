@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Digest History | Market News{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Digest history</p>
+    <h1>Sent digests</h1>
+    <p class="muted">Review previously sent digests and their ranked articles.</p>
+  </div>
+</section>
+
+<section class="cards">
+  {% for entry in digests %}
+  <details class="card digest-card">
+    <summary>
+      <div class="summary-left">
+        <span class="pill pill-muted">{{ entry.digest.digest_type|capitalize }}</span>
+        <span class="muted small">{{ entry.digest.sent_at|format_datetime }}</span>
+      </div>
+      <div class="summary-right">
+        <span class="pill">{{ entry.digest.article_count }} articles</span>
+      </div>
+    </summary>
+    <div class="digest-articles">
+      {% for item in entry.articles %}
+      <div class="digest-article">
+        <div class="rank">#{{ item.rank or "-" }}</div>
+        <div class="digest-body">
+          <a class="card-title" href="{{ url_for('articles.article_detail', article_id=item.article.id) }}">
+            {{ item.article.title }}
+          </a>
+          <div class="muted small">
+            <span>{{ item.article.source or "Unknown source" }}</span>
+            <span aria-hidden="true">•</span>
+            <span>{{ item.article.published_at|format_datetime }}</span>
+          </div>
+          <div class="digest-metrics">
+            <span class="badge {{ item.sentiment_class }}">{{ item.sentiment or "No sentiment" }}</span>
+            <div class="impact-meter">
+              <div class="impact-track">
+                <span style="width: {{ item.impact_percent or 0 }}%"></span>
+              </div>
+              <span class="value">{{ item.avg_impact|format_score }}</span>
+            </div>
+            {% if item.topics %}
+            <div class="topics">
+              {% for topic in item.topics %}
+              <span class="pill small">{{ topic }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p class="empty-state">No articles were attached to this digest.</p>
+      {% endfor %}
+    </div>
+  </details>
+  {% else %}
+  <p class="empty-state">No digests have been recorded yet.</p>
+  {% endfor %}
+</section>
+{% endblock %}
+

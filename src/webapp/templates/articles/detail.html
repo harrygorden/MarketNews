@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} | Market News{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{{ url_for('articles.list_articles') }}">← Back to articles</a>
+
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Article</p>
+    <h1>{{ article.title }}</h1>
+    <div class="muted small">
+      <span>{{ article.source or "Unknown source" }}</span>
+      <span aria-hidden="true">•</span>
+      <span>{{ article.published_at|format_datetime }}</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <a class="btn ghost" href="{{ article.news_url }}" target="_blank" rel="noopener">View original</a>
+    <div class="badge {{ article_view.sentiment_class }}">
+      {{ article_view.sentiment or "No sentiment" }}
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="metrics-row">
+    <div class="metric">
+      <p class="label">Avg sentiment score</p>
+      <p class="value">{{ article_view.avg_sentiment|format_score }}</p>
+    </div>
+    <div class="metric">
+      <p class="label">Avg impact</p>
+      <div class="impact-meter">
+        <div class="impact-track">
+          <span style="width: {{ article_view.impact_percent or 0 }}%"></span>
+        </div>
+        <p class="value">{{ article_view.avg_impact|format_score }}</p>
+      </div>
+    </div>
+    <div class="metric">
+      <p class="label">Analyses</p>
+      <p class="value">{{ analyses|length }}</p>
+    </div>
+    <div class="metric">
+      <p class="label">Topics</p>
+      <p class="value">{{ article_view.topics|length }}</p>
+    </div>
+  </div>
+
+  {% if article_view.topics %}
+  <div class="topics">
+    {% for topic in article_view.topics %}
+    <span class="pill">{{ topic }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<section class="analyses-grid">
+  {% for analysis in analyses %}
+  <article class="card analysis-card">
+    <header class="analysis-header">
+      <div>
+        <p class="eyebrow">{{ analysis.provider }} • {{ analysis.model or "n/a" }}</p>
+        <div class="muted small">{{ analysis.analyzed_at|format_datetime }}</div>
+      </div>
+      <div class="badge {{ analysis.sentiment_class }}">{{ analysis.sentiment or "Unknown" }}</div>
+    </header>
+    <div class="metrics-row">
+      <div class="metric">
+        <p class="label">Sentiment score</p>
+        <p class="value">{{ analysis.sentiment_score|format_score }}</p>
+      </div>
+      <div class="metric">
+        <p class="label">Impact</p>
+        <p class="value">{{ analysis.impact_score|format_score }}</p>
+      </div>
+      {% if analysis.confidence is not none %}
+      <div class="metric">
+        <p class="label">Confidence</p>
+        <p class="value">{{ analysis.confidence|percent }}</p>
+      </div>
+      {% endif %}
+    </div>
+    <div class="summary">
+      <p>{{ analysis.summary or "No summary available yet." }}</p>
+    </div>
+    {% if analysis.key_topics %}
+    <div class="topics">
+      {% for topic in analysis.key_topics %}
+      <span class="pill">{{ topic }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </article>
+  {% else %}
+  <p class="empty-state">Analyses have not been generated for this article yet.</p>
+  {% endfor %}
+</section>
+{% endblock %}
+

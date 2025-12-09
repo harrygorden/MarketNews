@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Articles | Market News{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Live feed</p>
+    <h1>Articles</h1>
+    <p class="muted">Browse recent articles with LLM analyses, filters, and search.</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn ghost" type="button" data-toggle-filters>Filters</button>
+    <span class="pill pill-muted">{{ total }} results</span>
+  </div>
+</section>
+
+<section class="filters" id="filters-panel">
+  <form class="filter-grid" method="get">
+    <div class="field">
+      <label for="q">Search</label>
+      <input id="q" name="q" type="search" placeholder="Headline or content" value="{{ filters.q }}">
+    </div>
+    <div class="field">
+      <label for="start">From</label>
+      <input id="start" name="start" type="date" value="{{ filters.start }}">
+    </div>
+    <div class="field">
+      <label for="end">To</label>
+      <input id="end" name="end" type="date" value="{{ filters.end }}">
+    </div>
+    <div class="field">
+      <label for="sentiment">Sentiment</label>
+      <select id="sentiment" name="sentiment" data-auto-submit>
+        <option value="">Any</option>
+        {% for option in ["Bullish", "Bearish", "Neutral"] %}
+        <option value="{{ option }}" {% if filters.sentiment==option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <label for="impact">Impact</label>
+      <select id="impact" name="impact" data-auto-submit>
+        <option value="">Any</option>
+        <option value="high" {% if filters.impact=="high" %}selected{% endif %}>High (&ge; 0.75)</option>
+        <option value="medium" {% if filters.impact=="medium" %}selected{% endif %}>Medium (0.5 - 0.74)</option>
+        <option value="low" {% if filters.impact=="low" %}selected{% endif %}>Low (&lt; 0.5)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="source">Source</label>
+      <select id="source" name="source" data-auto-submit>
+        <option value="">Any</option>
+        {% for source in sources %}
+        <option value="{{ source }}" {% if filters.source==source %}selected{% endif %}>{{ source }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="field actions">
+      <button class="btn primary" type="submit">Apply</button>
+      <a class="btn ghost" href="{{ url_for('articles.list_articles') }}">Reset</a>
+    </div>
+  </form>
+</section>
+
+<section class="cards">
+  {% for item in articles %}
+  <article class="card">
+    <header class="card-header">
+      <div>
+        <a class="card-title" href="{{ url_for('articles.article_detail', article_id=item.article.id) }}">
+          {{ item.article.title }}
+        </a>
+        <div class="muted small">
+          <span>{{ item.article.source or "Unknown source" }}</span>
+          <span aria-hidden="true">•</span>
+          <span>{{ item.article.published_at|format_datetime }}</span>
+        </div>
+      </div>
+      <div class="badge {{ item.sentiment_class }}">
+        {{ item.sentiment or "No sentiment" }}
+      </div>
+    </header>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <p class="label">Avg sentiment score</p>
+        <p class="value">{{ item.avg_sentiment|format_score }}</p>
+      </div>
+      <div class="metric">
+        <p class="label">Impact</p>
+        <div class="impact-meter" aria-label="Impact score">
+          <div class="impact-track">
+            <span style="width: {{ item.impact_percent or 0 }}%"></span>
+          </div>
+          <p class="value">{{ item.avg_impact|format_score }}</p>
+        </div>
+      </div>
+      <div class="metric">
+        <p class="label">Analyses</p>
+        <p class="value">{{ item.analyses|length }}</p>
+      </div>
+    </div>
+
+    {% if item.topics %}
+    <div class="topics">
+      {% for topic in item.topics %}
+      <span class="pill">{{ topic }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </article>
+  {% else %}
+  <p class="empty-state">No articles match your filters yet.</p>
+  {% endfor %}
+</section>
+
+{% if total_pages > 1 %}
+<nav class="pagination" aria-label="Pagination">
+  {% if page > 1 %}
+    <a class="btn ghost" href="{{ url_for('articles.list_articles', page=page-1, **filters) }}">Previous</a>
+  {% endif %}
+  <span class="muted">Page {{ page }} of {{ total_pages }}</span>
+  {% if page < total_pages %}
+    <a class="btn ghost" href="{{ url_for('articles.list_articles', page=page+1, **filters) }}">Next</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}
+

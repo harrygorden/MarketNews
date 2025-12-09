@@ -108,15 +108,15 @@ flowchart TB
 
 #### Subtasks
 
-- [ ] **1.1** Initialize project structure with `pyproject.toml` and package configuration
-- [ ] **1.2** Create `src/shared/config.py` with environment variable loading and validation
-- [ ] **1.3** Create `src/shared/database/models.py` with SQLAlchemy ORM models
-- [ ] **1.4** Create `src/shared/database/session.py` with async database session management
-- [ ] **1.5** Create `scripts/init_db.py` for database schema initialization
-- [ ] **1.6** Create `.env.example` with all required environment variables
-- [ ] **1.7** Create `README.md` with setup instructions
-- [ ] **1.8** Set up local PostgreSQL or connection to Azure PostgreSQL for development
-- [ ] **1.9** Run `init_db.py` and verify all tables are created correctly
+- [x] **1.1** Initialize project structure with `pyproject.toml` and package configuration
+- [x] **1.2** Create `src/shared/config.py` with environment variable loading and validation
+- [x] **1.3** Create `src/shared/database/models.py` with SQLAlchemy ORM models
+- [x] **1.4** Create `src/shared/database/session.py` with async database session management
+- [x] **1.5** Create `scripts/init_db.py` for database schema initialization
+- [x] **1.6** Create `.env.example` with all required environment variables
+- [x] **1.7** Create `README.md` with setup instructions
+- [x] **1.8** Set up local PostgreSQL or connection to Azure PostgreSQL for development
+- [x] **1.9** Run `init_db.py` and verify all tables are created correctly
 
 #### Acceptance Criteria
 
@@ -159,16 +159,16 @@ MarketNews/
 
 #### Subtasks
 
-- [ ] **2.1** Create `src/shared/services/news_api.py` with StockNewsAPI client
-- [ ] **2.2** Implement article fetching with proper error handling and retry logic
-- [ ] **2.3** Implement paywall detection (check for "paywall" or "paylimitwall" in topics array)
-- [ ] **2.4** Create `src/functions/poll_news/__init__.py` Azure Function handler
-- [ ] **2.5** Create `src/functions/poll_news/function.json` with timer trigger configuration
-- [ ] **2.6** Implement market-hours-aware scheduling logic (5min weekday, 1hr weekend)
-- [ ] **2.7** Implement article deduplication by URL before database insert
-- [ ] **2.8** Create `src/functions/host.json` and `src/functions/requirements.txt`
-- [ ] **2.9** Write unit tests for news API client and paywall filtering
-- [ ] **2.10** Test function locally using Azure Functions Core Tools
+- [x] **2.1** Create `src/shared/services/news_api.py` with StockNewsAPI client
+- [x] **2.2** Implement article fetching with proper error handling and retry logic
+- [x] **2.3** Implement paywall detection (check for "paywall" or "paylimitwall" in topics array)
+- [x] **2.4** Create `src/functions/poll_news/__init__.py` Azure Function handler
+- [x] **2.5** Create `src/functions/poll_news/function.json` with timer trigger configuration
+- [x] **2.6** Implement market-hours-aware scheduling logic (5min weekday, 1hr weekend)
+- [x] **2.7** Implement article deduplication by URL before database insert
+- [x] **2.8** Create `src/functions/host.json` and `src/functions/requirements.txt`
+- [x] **2.9** Write unit tests for news API client and paywall filtering
+- [x] **2.10** Test function locally using Azure Functions Core Tools
 
 #### Acceptance Criteria
 
@@ -210,14 +210,14 @@ tests/
 
 #### Subtasks
 
-- [ ] **3.1** Create `src/shared/services/queue.py` with Azure Storage Queue client wrapper
-- [ ] **3.2** Implement message enqueue function with proper serialization
-- [ ] **3.3** Implement poison message handling configuration in function.json
-- [ ] **3.4** Create `processing_queue_failures` table tracking logic
-- [ ] **3.5** Update `poll_news` function to enqueue article IDs after successful insert
-- [ ] **3.6** Create queue message schema using Pydantic
-- [ ] **3.7** Test queue operations locally using Azurite or Azure Storage emulator
-- [ ] **3.8** Document queue message format in README
+- [x] **3.1** Create `src/shared/services/queue.py` with Azure Storage Queue client wrapper
+- [x] **3.2** Implement message enqueue function with proper serialization
+- [x] **3.3** Implement poison message handling configuration in function.json
+- [x] **3.4** Create `processing_queue_failures` table tracking logic
+- [x] **3.5** Update `poll_news` function to enqueue article IDs after successful insert
+- [x] **3.6** Create queue message schema using Pydantic
+- [x] **3.7** Test queue operations locally using Azurite or Azure Storage emulator
+- [x] **3.8** Document queue message format in README
 
 #### Acceptance Criteria
 
@@ -252,21 +252,21 @@ src/
 
 #### Subtasks
 
-- [ ] **4.1** Create `src/shared/services/firecrawl.py` with FireCrawl API client
-- [ ] **4.2** Implement article scraping with error handling for failed scrapes
-- [ ] **4.3** Create `src/shared/services/analyzers.py` with base analyzer interface
-- [ ] **4.4** Implement Claude Sonnet 4.5 analyzer using Anthropic SDK
-- [ ] **4.5** Implement GPT-4o analyzer using OpenAI SDK
-- [ ] **4.6** Implement Gemini 2.5 Pro analyzer using Google AI SDK
-- [ ] **4.7** Create standardized prompt template for consistent analysis output
-- [ ] **4.8** Create Pydantic schema for LLM analysis response validation
-- [ ] **4.9** Create `src/functions/process_article/__init__.py` queue-triggered function
-- [ ] **4.10** Create `src/functions/process_article/function.json` with queue trigger
-- [ ] **4.11** Implement parallel LLM calls using asyncio.gather
-- [ ] **4.12** Store all three analyses in `article_analyses` table
-- [ ] **4.13** Update article record with scraped content and status
-- [ ] **4.14** Handle scrape failures gracefully (mark article, don't block queue)
-- [ ] **4.15** Write unit tests for analyzers with mocked LLM responses
+- [x] **4.1** Create `src/shared/services/firecrawl.py` with FireCrawl API client
+- [x] **4.2** Implement article scraping with error handling for failed scrapes
+- [x] **4.3** Create `src/shared/services/analyzers.py` with base analyzer interface
+- [x] **4.4** Implement Claude Sonnet 4.5 analyzer using Anthropic SDK
+- [x] **4.5** Implement GPT-4o analyzer using OpenAI SDK
+- [x] **4.6** Implement Gemini 2.5 Pro analyzer using Google AI SDK
+- [x] **4.7** Create standardized prompt template for consistent analysis output
+- [x] **4.8** Create Pydantic schema for LLM analysis response validation
+- [x] **4.9** Create `src/functions/process_article/__init__.py` queue-triggered function
+- [x] **4.10** Create `src/functions/process_article/function.json` with queue trigger
+- [x] **4.11** Implement parallel LLM calls using asyncio.gather
+- [x] **4.12** Store all three analyses in `article_analyses` table
+- [x] **4.13** Update article record with scraped content and status
+- [x] **4.14** Handle scrape failures gracefully (mark article, don't block queue)
+- [x] **4.15** Write unit tests for analyzers with mocked LLM responses
 
 #### Acceptance Criteria
 
@@ -309,16 +309,16 @@ tests/
 
 #### Subtasks
 
-- [ ] **5.1** Create `src/shared/services/discord.py` with Discord webhook client
-- [ ] **5.2** Implement rich embed message formatting for article alerts
-- [ ] **5.3** Implement consensus detection logic (all LLMs agree on sentiment direction)
-- [ ] **5.4** Implement impact threshold checking (configurable, default 0.7)
-- [ ] **5.5** Implement topic relevance filtering (S&P 500, Nasdaq, Gold, Fed, FOMC)
-- [ ] **5.6** Add notification trigger to `process_article` function after analysis
-- [ ] **5.7** Include web app detail view link in notification
-- [ ] **5.8** Create notification message template with headline, source, sentiment, impact, links
-- [ ] **5.9** Add rate limiting to prevent Discord webhook abuse
-- [ ] **5.10** Test notifications with mock high-impact articles
+- [x] **5.1** Create `src/shared/services/discord.py` with Discord webhook client
+- [x] **5.2** Implement rich embed message formatting for article alerts
+- [x] **5.3** Implement consensus detection logic (all LLMs agree on sentiment direction)
+- [x] **5.4** Implement impact threshold checking (configurable, default 0.7)
+- [x] **5.5** Implement topic relevance filtering (S&P 500, Nasdaq, Gold, Fed, FOMC)
+- [x] **5.6** Add notification trigger to `process_article` function after analysis
+- [x] **5.7** Include web app detail view link in notification
+- [x] **5.8** Create notification message template with headline, source, sentiment, impact, links
+- [x] **5.9** Add rate limiting to prevent Discord webhook abuse
+- [x] **5.10** Test notifications with mock high-impact articles
 
 #### Acceptance Criteria
 
@@ -349,22 +349,22 @@ src/
 
 #### Subtasks
 
-- [ ] **6.1** Create `src/functions/send_digest/__init__.py` with digest logic
-- [ ] **6.2** Create `src/functions/send_digest/function.json` with timer triggers
-- [ ] **6.3** Implement article aggregation query (since last digest, by type)
-- [ ] **6.4** Implement article prioritization algorithm:
+- [x] **6.1** Create `src/functions/send_digest/__init__.py` with digest logic
+- [x] **6.2** Create `src/functions/send_digest/function.json` with timer triggers
+- [x] **6.3** Implement article aggregation query (since last digest, by type)
+- [x] **6.4** Implement article prioritization algorithm:
   - LLM consensus (all three agree) - highest priority
   - Sentiment strength (absolute value of average score)
   - Impact score
-- [ ] **6.5** Implement digest message formatting with ranked article list
-- [ ] **6.6** Create premarket digest (6:30 AM ET, weekdays)
-- [ ] **6.7** Create lunch digest (12:00 PM ET, weekdays)
-- [ ] **6.8** Create postmarket digest (4:30 PM ET, weekdays)
-- [ ] **6.9** Create weekly digest (12:00 PM ET, Saturday)
-- [ ] **6.10** Store digest records in `digests` and `digest_articles` tables
-- [ ] **6.11** Update articles with `included_in_digest_at` timestamp
-- [ ] **6.12** Handle empty digest periods gracefully (no articles = no message or summary message)
-- [ ] **6.13** Test digest generation with various article scenarios
+- [x] **6.5** Implement digest message formatting with ranked article list
+- [x] **6.6** Create premarket digest (6:30 AM ET, weekdays)
+- [x] **6.7** Create lunch digest (12:00 PM ET, weekdays)
+- [x] **6.8** Create postmarket digest (4:30 PM ET, weekdays)
+- [x] **6.9** Create weekly digest (12:00 PM ET, Saturday)
+- [x] **6.10** Store digest records in `digests` and `digest_articles` tables
+- [x] **6.11** Update articles with `included_in_digest_at` timestamp
+- [x] **6.12** Handle empty digest periods gracefully (no articles = no message or summary message)
+- [x] **6.13** Test digest generation with various article scenarios
 
 #### Acceptance Criteria
 

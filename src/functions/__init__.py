@@ -1,0 +1,4 @@
+"""
+Azure Functions package entry.
+"""
+

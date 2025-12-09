@@ -18,8 +18,18 @@ MarketNews/
 │           ├── __init__.py
 │           ├── models.py
 │           └── session.py
+├── src/functions/
+│   ├── __init__.py
+│   ├── host.json
+│   ├── requirements.txt
+│   ├── local.settings.json.example
+│   └── poll_news/
+│       ├── __init__.py
+│       └── function.json
 └── scripts/
     └── init_db.py
+tests/
+└── test_news_api.py
 ```
 
 ## Quickstart
@@ -49,7 +59,7 @@ All configuration is loaded via `shared.config.Settings` and validated on startu
 - `STOCKNEWS_API_KEY`, `FIRECRAWL_API_KEY` — external API keys
 - `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY` — LLM providers
 - `DISCORD_WEBHOOK_ALERTS`, `DISCORD_WEBHOOK_DIGESTS` — Discord targets
-- `AZURE_STORAGE_CONNECTION_STRING` — queue storage (future milestones)
+- `AZURE_STORAGE_CONNECTION_STRING`, `QUEUE_NAME` — queue storage (default `article-processing`)
 - `IMPACT_THRESHOLD` — default 0.7
 - `LOG_LEVEL` — default `INFO`
 
@@ -65,6 +75,38 @@ Initialize or reset the schema with:
 python scripts/init_db.py
 ```
 
-## Next Steps
-- Milestone 2+: Azure Functions for polling, queueing, and processing
-- Add unit tests and CI as new components land
+## Polling Function (Milestone 2)
+- Local settings template: `src/functions/local.settings.json.example` (copy to `local.settings.json`).
+- Timer schedule: every 5 minutes (UTC). Weekend guard runs only on the top of the hour.
+- Paywall filtering: skips articles whose `topics` contain `paywall` or `paylimitwall`.
+- Deduplication: skips articles whose `news_url` already exists in the database.
+- Run locally with Azure Functions Core Tools:
+  ```bash
+  cd src/functions
+  func start
+  ```
+
+### Queue Message Format (Milestone 3)
+- Queue: `QUEUE_NAME` (default `article-processing`)
+- Message schema (`ArticleQueueMessage`):
+  ```json
+  {
+    "article_id": 123,
+    "news_url": "https://example.com/article",
+    "source": "Example Source",
+    "published_at": "2025-12-08T12:00:00Z"
+  }
+  ```
+
+## Processing Function (Milestone 4)
+- Queue-triggered function `process_article` consumes `QUEUE_NAME`.
+- Scrapes article content via Firecrawl (requires `FIRECRAWL_API_KEY`).
+- Runs analyzers (Claude/OpenAI/Gemini) in parallel when API keys are set.
+- Stores analysis in `article_analyses`, updates `articles.scraped_content`/status.
+- Configure Function host env (`AzureWebJobsStorage`, `QUEUE_NAME`, API keys) in `src/functions/local.settings.json`.
+
+### Connectivity Test Script
+- Send a test queue message (requires valid `article_id` in DB):
+  ```bash
+  python scripts/test_queue_connectivity.py --article-id 123 --news-url https://example.com --source Example
+  ```
